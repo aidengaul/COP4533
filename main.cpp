@@ -30,7 +30,7 @@ int ModifiedKnapsack(int n, int W, int l, const std::vector<int> &weights, const
     std::vector<int> traceback;
     int i = n, w = W, k = l;
 
-    // Ensure that the indices are valid
+    // Loop while all indices are valid
     while (i > 0 && w > 0 && k > 0) {
         // Checks if the ith item was chosen or not and navigates upward in the tabulation matrix accordingly
         if (matrix[i][w][k] != matrix[i - 1][w][k]) {
@@ -45,6 +45,7 @@ int ModifiedKnapsack(int n, int W, int l, const std::vector<int> &weights, const
     if (traceback.empty() || l != traceback.size())
         return -1;
     else {
+        // Prints out the items included for an optimal solution
         std::cout << "Selected items: ";
         for (auto elem : traceback) {
             std::cout << elem;
@@ -69,7 +70,7 @@ int main() {
     std::cout << "Target quantity of items: " << std::endl;
     std::cin >> l;
 
-    // Intialize vectors and load them wth random ints
+    // Initialize vectors and load them wth random ints
     std::vector<int> values(n);
     std::vector<int> weights(n);
     std::default_random_engine gen;
@@ -81,9 +82,9 @@ int main() {
         values[x] = (distValues(gen));
     }
 
+    // This block displays the items with their respective values and weights
     std::cout << std::left << std::setw(20) << "Item" << std::setw(20) << "Value" << std::setw(20) << "Weight" << std::endl;
     std::cout << "=========================================================" << std::endl;
-
     for (int x = 0; x < n; x++) {
         std::cout << std::left << std::setw(20) << x << std::setw(20) << values[x] << std::setw(20) << weights[x] << std::endl;
     }
@@ -92,7 +93,7 @@ int main() {
     int result = ModifiedKnapsack(n, W, l, weights, values);
 
     if (result <= 0)
-        std::cout << "No solution available for " << l << " tems subject to a weight limt of " << W << std::endl;
+        std::cout << "No solution available for " << l << " items subject to a weight limit of " << W << std::endl;
     else
         std::cout << "The maximum value of items contained in the knapsack subject to maximum weight "
             << W << " and target quantity " << l << " is " << result << '.';
