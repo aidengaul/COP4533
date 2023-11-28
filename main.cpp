@@ -58,6 +58,23 @@ int ModifiedKnapsack(int n, int W, int l, const std::vector<int> &weights, const
     return matrix[n][W][l];
 }
 
+// This is a brute force recursive solution that I am using to verify that my dynamic algorithm is correct
+int bruteForce(int n, int W, int l, const std::vector<int> &weights, const std::vector<int> &values, int index) {
+    if (W < 0 || l < 0)
+        return INT_MIN;
+
+    if (index == n || l == 0 || W == 0)
+        return 0;
+
+    int exclude = bruteForce(n, W, l, weights, values, index + 1);
+
+    int include = 0;
+    if (weights[index] <= W && l > 0)
+        include = values[index] + bruteForce(n, W - weights[index], l - 1, weights, values, index + 1);
+
+    return std::max(include, exclude);
+}
+
 int main() {
     int n, W, l;
 
@@ -96,7 +113,10 @@ int main() {
         std::cout << "No solution available for " << l << " items subject to a weight limit of " << W << std::endl;
     else
         std::cout << "The maximum value of items contained in the knapsack subject to maximum weight "
-            << W << " and target quantity " << l << " is " << result << '.';
+            << W << " and target quantity " << l << " is " << result << '.' << std::endl;
+
+//    int brute = bruteForce(n, W, l, weights, values, 0);
+//    std::cout << brute << std::endl;
 
     return 0;
 }
